@@ -49,6 +49,7 @@ def update_bullets(bullets):
         if bullet.rect.bottom <= 0:
             bullets.remove(bullet)
 
+
 def fire_bullet(ai_setting, screen, ship, bullets):
     """ 如果没有达到限制就发射一颗子弹 """
 
