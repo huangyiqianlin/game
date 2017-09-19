@@ -15,6 +15,7 @@ def check_event(ai_setting, screen, ship, bullets):
 
 
 def check_event_key_down(event, ship, ai_setting, screen, bullets):
+    """ 键盘按下事件 """
     if event.key == pygame.K_RIGHT:
         ship.moving_right = True
     elif event.key == pygame.K_LEFT:
@@ -24,6 +25,7 @@ def check_event_key_down(event, ship, ai_setting, screen, bullets):
 
 
 def check_event_key_up(event, ship):
+    """ 键盘弹起事件 """
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
     elif event.key == pygame.K_LEFT:
