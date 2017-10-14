@@ -21,7 +21,9 @@ class Setting():
         self.bullet_allowed = 10
 
         # 外星人设置
-        self.alien_speed = 1
+        self.alien_speed = 100
         self.fleet_drop_speed = 10
         # fleet_direction = 1表示向右移动 -1 表示向左
         self.fleet_direction = 1
+
+        self.ship_limit = 3

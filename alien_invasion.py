@@ -32,6 +32,6 @@ def run_game():
         bullets.update()
 
         # 删除已经消失的子弹
-        gf.update_bullets(bullets, aliens, ai_setting, screen)
-        gf.update_aliens(ai_setting, aliens)
+        gf.update_bullets(bullets, aliens, ai_setting, screen, ship)
+        gf.update_aliens(ai_setting, aliens, ship)
         gf.update_screen(ai_setting, screen, ship, bullets, aliens)
