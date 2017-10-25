@@ -37,5 +37,3 @@ class Alien(Sprite):
             return True
         elif self.rect.left <= 0:
             return True
-
-
