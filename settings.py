@@ -34,6 +34,9 @@ class Setting(object):
         # fleet_direction = 1表示向右移动 -1 表示向左
         self.fleet_direction = 1
 
+        #记分
+        self.alien_point = 50
+
     def increase_speed(self):
         """ 提高速度设置 """
         self.ship_speed *= self.speedup_scale

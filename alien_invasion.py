@@ -1,7 +1,7 @@
 import pygame
 from settings import Setting
 from ship import Ship
-from alien import Alien
+from scoreboard import Scoreboard
 import game_function as gf
 from pygame.sprite import Group
 from game_stat import GameStats
@@ -19,18 +19,19 @@ def run_game():
     # 创建Play按钮
     play_button = Button(ai_setting, screen, "Play")
 
-    # 创建一个用于统计游戏信息的实例
-    stats = GameStats(ai_setting)
+    # 创建一个用于统计游戏信息的实例，并创建计分牌
+    stats = GameStats(ai_settings=ai_setting)
+    sb = Scoreboard(ai_settings=ai_setting, screen=screen, stats=stats)
 
     # 创建一艘飞船
-    ship = Ship(screen, ai_setting)
+    ship = Ship(screen=screen, setting=ai_setting)
 
     # 创建一个用于子弹的编组
     bullets = Group()
 
     # 创建外星人编组
     aliens = Group()
-    gf.create_fleet(ai_setting, screen, aliens, ship)
+    gf.create_fleet(ai_settings=ai_setting, screen=screen, aliens=aliens, ship=ship)
 
     # 开始游戏的主循环
     while True:
@@ -43,8 +44,9 @@ def run_game():
             bullets.update()
 
             # 删除已经消失的子弹
-            gf.update_bullets(bullets, aliens, ai_setting, screen, ship)
+            gf.update_bullets(bullets=bullets, aliens=aliens, ai_settings=ai_setting, screen=screen, ship=ship, sb=sb,
+                              stats=stats)
             gf.update_aliens(ai_setting, aliens, ship, stats, screen, bullets)
 
         gf.update_screen(ai_settings=ai_setting, screen=screen, ship=ship, bullets=bullets, aliens=aliens,
-                         play_button=play_button, stats=stats)
+                         play_button=play_button, stats=stats, sb=sb)
