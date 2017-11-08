@@ -5,7 +5,7 @@ from alien import Alien
 from time import sleep
 
 
-def check_event(ai_setting, screen, ship, bullets, stats, play_button, aliens):
+def check_event(ai_setting, screen, ship, bullets, stats, play_button, aliens, sb):
     """" 响应按键和鼠标事件 """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -13,14 +13,14 @@ def check_event(ai_setting, screen, ship, bullets, stats, play_button, aliens):
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             check_play_button(stats=stats, play_button=play_button, mouse_x=mouse_x, mouse_y=mouse_y,
-                              ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets)
+                              ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets, sb=sb)
         elif event.type == pygame.KEYDOWN:
             check_event_key_down(event, ship, ai_setting, screen, bullets)
         elif event.type == pygame.KEYUP:
             check_event_key_up(event, ship)
 
 
-def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets):
+def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets, sb):
     """ 单机play开始游戏 """
     if play_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
         # 重置游戏设置
@@ -29,6 +29,12 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, ai_settings, screen,
         pygame.mouse.set_visible(False)
         stats.reset_stats()
         stats.game_active = True
+
+        # 重置记分牌图像
+        sb.prep_score()
+        sb.prep_high_score()
+        sb.prep_level()
+        sb.prep_ships()
 
         #  清空外星人列表和子弹列表
         aliens.empty()
@@ -95,12 +101,19 @@ def check_bullet_alien_collisions(ai_settings, screen, ship, aliens, bullets, sb
     # 删除发生碰撞的子弹和外星人
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     if collisions:
-        stats.score += ai_settings.alien_points
-        sb.prep_score()
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_point
+            sb.prep_score()
+        check_high_score(stats=stats, sb=sb)
 
     if len(aliens) == 0:
         bullets.empty()
         ai_settings.increase_speed()
+
+        # 提高一个等级
+        stats.level += 1
+        sb.prep_level()
+
         create_fleet(ai_settings=ai_settings, screen=screen, aliens=aliens, ship=ship)
 
 
@@ -143,18 +156,19 @@ def create_fleet(ai_settings, screen, aliens, ship):
             create_alien(ai_settings, screen, aliens, alien_number, row_number)
 
 
-def update_aliens(ai_settings, aliens, ship, stats, screen, bullets):
+def update_aliens(ai_settings, aliens, ship, stats, screen, bullets, sb):
     """ 更新所有外星人的位置 """
 
     # 检测是否有外星人到达了屏幕底端
-    check_aliens_bottom(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets)
+    check_aliens_bottom(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets,
+                        sb=sb)
 
     check_fleet_edges(ai_settings, aliens)
     aliens.update()
 
     # 检测外星人和飞船之间的碰撞
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, stats, screen, ship, aliens, bullets)
+        ship_hit(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets, sb=sb)
         print('hit!!!!')
 
 
@@ -173,7 +187,7 @@ def change_fleet_direction(ai_settings, aliens):
     ai_settings.fleet_direction *= -1
 
 
-def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
+def ship_hit(ai_settings, stats, screen, ship, aliens, bullets, sb):
     """ 响应被外星人撞到的飞船 """
     # 将ships_left减1
     if stats.ships_left > 0:
@@ -182,6 +196,9 @@ def ship_hit(ai_settings, stats, screen, ship, aliens, bullets):
         # 清空外星人列表和子弹列表
         aliens.empty()
         bullets.empty()
+
+        # 更新计分牌
+        sb.prep_ships()
 
         # 创建一群新的外星人，并将飞船放到屏幕底部中央
         create_fleet(ai_settings, screen, aliens, ship)
@@ -201,11 +218,19 @@ def get_number_rows(ai_settings, ship_height, alien_height):
     return number_rows
 
 
-def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(ai_settings, stats, screen, ship, aliens, bullets, sb):
     """ 检查是否有外星人到了屏幕底端 """
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
             # 像飞船被撞到一样进行处理
-            ship_hit(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets)
+            ship_hit(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets,
+                     sb=sb)
             break
+
+
+def check_high_score(stats, sb):
+    """ 检查是否诞生了新的最高分 """
+    if stats.score > stats.high_score:
+        stats.high_score = stats.score
+        sb.prep_high_score()

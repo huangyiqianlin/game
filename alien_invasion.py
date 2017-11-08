@@ -37,7 +37,7 @@ def run_game():
     while True:
         # 监视鼠标事件
         gf.check_event(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets, stats=stats,
-                       play_button=play_button, aliens=aliens)
+                       play_button=play_button, aliens=aliens, sb=sb)
 
         if stats.game_active:
             ship.update()
@@ -46,7 +46,8 @@ def run_game():
             # 删除已经消失的子弹
             gf.update_bullets(bullets=bullets, aliens=aliens, ai_settings=ai_setting, screen=screen, ship=ship, sb=sb,
                               stats=stats)
-            gf.update_aliens(ai_setting, aliens, ship, stats, screen, bullets)
+            gf.update_aliens(ai_settings=ai_setting, aliens=aliens, ship=ship, stats=stats, screen=screen,
+                             bullets=bullets, sb=sb)
 
         gf.update_screen(ai_settings=ai_setting, screen=screen, ship=ship, bullets=bullets, aliens=aliens,
                          play_button=play_button, stats=stats, sb=sb)
