@@ -1,7 +1,7 @@
 import pygame.font
 
 
-class Button(object):
+class Button:
     def __init__(self, ai_settings, screen, msg):
         """ 初始化按钮的属性 """
         self.screen = screen
@@ -30,4 +30,3 @@ class Button(object):
         # 绘制一个用颜色填充的按钮，再绘制文本
         self.screen.fill(self.button_color, self.rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)
-

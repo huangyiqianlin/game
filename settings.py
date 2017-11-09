@@ -1,4 +1,4 @@
-class Setting(object):
+class Setting:
     """  存储设置的类  """
 
     def __init__(self):

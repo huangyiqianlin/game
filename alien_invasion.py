@@ -17,7 +17,7 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
 
     # 创建Play按钮
-    play_button = Button(ai_setting, screen, "Play")
+    play_button = Button(ai_settings=ai_setting, screen=screen, msg="Play")
 
     # 创建一个用于统计游戏信息的实例，并创建计分牌
     stats = GameStats(ai_settings=ai_setting)
