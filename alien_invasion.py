@@ -11,32 +11,32 @@ from button import Button
 def run_game():
     # 初始化一个游戏并创建一个游戏屏幕对象
     pygame.init()
-    ai_setting = Setting()
+    ai_settings = Setting()
 
-    screen = pygame.display.set_mode((ai_setting.screen_width, ai_setting.screen_height))
+    screen = pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
 
     # 创建Play按钮
-    play_button = Button(ai_settings=ai_setting, screen=screen, msg="Play")
+    play_button = Button(ai_settings=ai_settings, screen=screen, msg="Play")
 
     # 创建一个用于统计游戏信息的实例，并创建计分牌
-    stats = GameStats(ai_settings=ai_setting)
-    sb = Scoreboard(ai_settings=ai_setting, screen=screen, stats=stats)
+    stats = GameStats(ai_settings=ai_settings)
+    sb = Scoreboard(ai_settings=ai_settings, screen=screen, stats=stats)
 
     # 创建一艘飞船
-    ship = Ship(screen=screen, setting=ai_setting)
+    ship = Ship(screen=screen, setting=ai_settings)
 
     # 创建一个用于子弹的编组
     bullets = Group()
 
     # 创建外星人编组
     aliens = Group()
-    gf.create_fleet(ai_settings=ai_setting, screen=screen, aliens=aliens, ship=ship)
+    gf.create_fleet(ai_settings=ai_settings, screen=screen, aliens=aliens, ship=ship)
 
     # 开始游戏的主循环
     while True:
         # 监视鼠标事件
-        gf.check_event(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets, stats=stats,
+        gf.check_event(ai_setting=ai_settings, screen=screen, ship=ship, bullets=bullets, stats=stats,
                        play_button=play_button, aliens=aliens, sb=sb)
 
         if stats.game_active:
@@ -44,10 +44,10 @@ def run_game():
             bullets.update()
 
             # 删除已经消失的子弹
-            gf.update_bullets(bullets=bullets, aliens=aliens, ai_settings=ai_setting, screen=screen, ship=ship, sb=sb,
+            gf.update_bullets(bullets=bullets, aliens=aliens, ai_settings=ai_settings, screen=screen, ship=ship, sb=sb,
                               stats=stats)
-            gf.update_aliens(ai_settings=ai_setting, aliens=aliens, ship=ship, stats=stats, screen=screen,
+            gf.update_aliens(ai_settings=ai_settings, aliens=aliens, ship=ship, stats=stats, screen=screen,
                              bullets=bullets, sb=sb)
 
-        gf.update_screen(ai_settings=ai_setting, screen=screen, ship=ship, bullets=bullets, aliens=aliens,
+        gf.update_screen(ai_settings=ai_settings, screen=screen, ship=ship, bullets=bullets, aliens=aliens,
                          play_button=play_button, stats=stats, sb=sb)

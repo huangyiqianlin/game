@@ -30,11 +30,14 @@ class Setting:
 
     def initialize_dynamic_settings(self):
         """ 初始化随着游戏进行而变化的设置 """
+
         # 飞船移动速度
         self.ship_speed = 5
         self.bullet_speed = 10
+
         # 外星人设置
         self.alien_speed = 10
+
         # fleet_direction = 1表示向右移动 -1 表示向左
         self.fleet_direction = 1
 
