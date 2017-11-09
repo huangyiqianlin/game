@@ -37,9 +37,8 @@ class Scoreboard(object):
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
 
-        #绘制飞船
+        # 绘制飞船
         self.ships.draw(self.screen)
-
 
     def prep_high_score(self):
         """ 将最高得分转换为渲染的图像 """
@@ -65,7 +64,7 @@ class Scoreboard(object):
         """ 显示还余下多少飞船 """
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
-            ship = Ship(self.ai_settings, self.screen)
+            ship = Ship(screen=self.screen, setting=self.ai_settings)
             ship.rect.x = 10 + ship_number * ship.rect.width
             ship.rect.y = 10
             self.ships.add(ship)
