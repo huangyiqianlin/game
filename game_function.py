@@ -9,7 +9,7 @@ def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens
     """" 响应按键和鼠标事件 """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit();
+            pygame.quit()
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -17,9 +17,9 @@ def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens
                               ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets, sb=sb)
         elif event.type == pygame.KEYDOWN:
             check_event_key_down(event=event, ship=ship, ai_setting=ai_setting, screen=screen, bullets=bullets,
-                                 stats=stats)
+                                 stats=stats, sb=sb, aliens=aliens)
         elif event.type == pygame.KEYUP:
-            check_event_key_up(event, ship)
+            check_event_key_up(event=event, ship=ship)
 
 
 def check_play_button(*, stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets, sb):
@@ -54,17 +54,18 @@ def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, ):
 
 def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb, aliens):
     """ 键盘按下事件 """
-    if event.key == pygame.K_RIGHT:  # 键盘➡️
+    if event.key == pygame.K_RIGHT:  # 键盘 左
         ship.moving_right = True
     elif event.key == pygame.K_q:  # 键盘Q
         sys.exit()
-    elif event.key == pygame.K_LEFT:  # 键盘⬅️
+    elif event.key == pygame.K_LEFT:  # 键盘 右
         ship.moving_left = True
     elif event.key == pygame.K_SPACE:  # 键盘 空格
-        fire_bullet(ai_setting, screen, ship, bullets)
+        fire_bullet(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets)
     elif event.key == pygame.K_s:  # 键盘 S
-        game_start(ai_settings=ai_setting, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
-                   ship=ship)
+        if not stats.game_active:
+            game_start(ai_settings=ai_setting, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
+                       ship=ship)
 
 
 def check_event_key_up(*, event, ship):
@@ -138,8 +139,8 @@ def fire_bullet(*, ai_setting, screen, ship, bullets):
 
 def get_number_aliens_x(*, ai_settings, alien_width):
     """  计算每一行可以容纳多少个外星人 """
-    available_spacex = ai_settings.screen_width - 2 * alien_width
-    number_aliens_x = int(available_spacex / (2 * alien_width))
+    available_space_x = ai_settings.screen_width - 2 * alien_width
+    number_aliens_x = int(available_space_x / (2 * alien_width))
     return number_aliens_x
 
 
@@ -188,7 +189,7 @@ def check_fleet_edges(*, ai_settings, aliens):
     """ 有外星人到达边缘时采取相应的措施 """
     for alien in aliens.sprites():
         if alien.check_edges():
-            change_fleet_direction(ai_settings, aliens)
+            change_fleet_direction(ai_settings=ai_settings, aliens=aliens)
             break
 
 
@@ -213,7 +214,7 @@ def ship_hit(*, ai_settings, stats, screen, ship, aliens, bullets, sb):
         sb.prep_ships()
 
         # 创建一群新的外星人，并将飞船放到屏幕底部中央
-        create_fleet(ai_settings, screen, aliens, ship)
+        create_fleet(ai_settings=ai_settings, screen=screen, aliens=aliens, ship=ship)
         ship.center_ship()
 
         # 暂停

@@ -3,8 +3,8 @@ from pygame.sprite import Group
 from ship import Ship
 
 
-class Scoreboard(object):
-    def __init__(self, ai_settings, screen, stats):
+class Scoreboard:
+    def __init__(self, *, ai_settings, screen, stats):
         """ 初始化显示得分涉及的属性 """
         self.screen = screen
         self.screen_rect = screen.get_rect()
