@@ -56,12 +56,16 @@ def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb,
     """ 键盘按下事件 """
     if event.key == pygame.K_RIGHT:  # 键盘 左
         ship.moving_right = True
+
     elif event.key == pygame.K_q:  # 键盘Q
         sys.exit()
+
     elif event.key == pygame.K_LEFT:  # 键盘 右
         ship.moving_left = True
+
     elif event.key == pygame.K_SPACE:  # 键盘 空格
         fire_bullet(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets)
+
     elif event.key == pygame.K_s:  # 键盘 S
         if not stats.game_active:
             game_start(ai_settings=ai_setting, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
@@ -72,6 +76,7 @@ def check_event_key_up(*, event, ship):
     """ 键盘弹起事件 """
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
+
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
