@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 
 
-class Bullet(Sprite):
+class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
     """ 一个对飞船子弹速度管理类 """
 
     def __init__(self, ai_setting, screen, ship):
@@ -10,14 +10,12 @@ class Bullet(Sprite):
         super().__init__()
         self.screen = screen
 
-        # 在（0 0）处创建一个表示子弹的矩形，再设置正确的位置
-        # self.rect = pygame.Rect(0, 0, ai_setting.bullet_width, ai_setting.bullet_height)
-        # self.rect.centerx = ship.rect.centerx
-        # self.rect.top = ship.rect.top
-
         self.alien_image = pygame.image.load('images/bullet.png')
+
+        # 压缩图片至合适的大小
         self.new_bullet_img = pygame.transform.scale(self.alien_image, (10, 20))
 
+        # 获取图片的surface 对象(也就是矩形形状的对象)
         self.rect = self.new_bullet_img.get_rect()
         self.rect.centerx = ship.rect.centerx
         self.rect.top = ship.rect.top
