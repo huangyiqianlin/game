@@ -11,14 +11,21 @@ class Bullet(Sprite):
         self.screen = screen
 
         # 在（0 0）处创建一个表示子弹的矩形，再设置正确的位置
-        self.rect = pygame.Rect(0, 0, ai_setting.bullet_width, ai_setting.bullet_height)
+        # self.rect = pygame.Rect(0, 0, ai_setting.bullet_width, ai_setting.bullet_height)
+        # self.rect.centerx = ship.rect.centerx
+        # self.rect.top = ship.rect.top
+
+        self.alien_image = pygame.image.load('images/bullet.png')
+        self.new_bullet_img = pygame.transform.scale(self.alien_image, (10, 20))
+
+        self.rect = self.new_bullet_img.get_rect()
         self.rect.centerx = ship.rect.centerx
         self.rect.top = ship.rect.top
 
         # 存储用小数表示的子弹位置
         self.y = float(self.rect.y)
 
-        self.color = ai_setting.bullet_color
+        # self.color = ai_setting.bullet_color
         self.speed_factor = ai_setting.bullet_speed
 
     def update(self):
@@ -30,5 +37,5 @@ class Bullet(Sprite):
 
     def draw_bullet(self):
         """ 在屏幕上绘制子弹 """
-        pygame.draw.rect(self.screen, self.color, self.rect)
-
+        # pygame.draw.rect(self.screen, self.color, self.rect)
+        self.screen.blit(self.new_bullet_img, self.rect)

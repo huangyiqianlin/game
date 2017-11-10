@@ -5,7 +5,7 @@ from pygame.sprite import Sprite
 class Ship(Sprite):
     def __init__(self, screen, setting):
         """ 初始化飞船并设定其初始位置 """
-        super(Ship,self).__init__()
+        super(Ship, self).__init__()
 
         self.screen = screen
 
@@ -27,6 +27,9 @@ class Ship(Sprite):
 
     def update(self):
         """ 根据移动标志来调整飞船位置 """
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        self.rect.centerx = mouse_x
+
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.rect.centerx += self.speed
         if self.moving_left and self.rect.left > self.screen_rect.left:
