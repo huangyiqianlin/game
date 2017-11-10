@@ -23,13 +23,15 @@ def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens
 
 
 def check_play_button(*, stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets, sb):
-    """ 单机play开始游戏 """
+    """ 单击play开始游戏 """
     if play_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
         game_start(ai_settings=ai_settings, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
                    ship=ship)
 
 
 def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, ):
+    """ 游戏开始 """
+
     # 重置游戏设置
     ai_settings.initialize_dynamic_settings()
 
