@@ -23,7 +23,6 @@ class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
         # 存储用小数表示的子弹位置
         self.y = float(self.rect.y)
 
-        # self.color = ai_setting.bullet_color
         self.speed_factor = ai_setting.bullet_speed
 
     def update(self):
@@ -35,5 +34,4 @@ class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
 
     def draw_bullet(self):
         """ 在屏幕上绘制子弹 """
-        # pygame.draw.rect(self.screen, self.color, self.rect)
         self.screen.blit(self.new_bullet_img, self.rect)
