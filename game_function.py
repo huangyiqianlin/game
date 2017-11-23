@@ -189,7 +189,6 @@ def update_aliens(*, ai_settings, aliens, ship, stats, screen, bullets, sb):
     # 检测外星人和飞船之间的碰撞
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(ai_settings=ai_settings, stats=stats, screen=screen, ship=ship, aliens=aliens, bullets=bullets, sb=sb)
-        print('hit!!!!')
 
 
 def check_fleet_edges(*, ai_settings, aliens):

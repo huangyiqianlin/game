@@ -10,7 +10,7 @@ class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
         super().__init__()
         self.screen = screen
 
-        self.alien_image = pygame.image.load('images/bullet.png')
+        self.alien_image = pygame.image.load('images/bullet.png').convert_alpha()
 
         # 压缩图片至合适的大小
         self.new_bullet_img = pygame.transform.scale(self.alien_image, (10, 20))
