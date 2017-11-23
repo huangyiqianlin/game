@@ -86,7 +86,7 @@ def check_event_key_up(*, event, ship):
 def update_screen(*, ai_settings, screen, ship, bullets, aliens, play_button, stats, sb):
     """ 更新屏幕上的图像，并切换到新屏幕 """
 
-    screen.fill(ai_settings.bg_color)
+    screen.fill(ai_settings.bg_color)  # 更新屏幕
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitme()
