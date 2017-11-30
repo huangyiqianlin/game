@@ -89,7 +89,7 @@ def update_screen(*, ai_settings, screen, ship, bullets, aliens, play_button, st
     screen.fill(ai_settings.bg_color)  # 更新屏幕
     for bullet in bullets.sprites():
         bullet.draw_bullet()
-    ship.blitme()
+    ship.blit_me()
     aliens.draw(screen)
 
     # 显示得分
@@ -118,7 +118,7 @@ def check_bullet_alien_collisions(*, ai_settings, screen, ship, aliens, bullets,
     """ 响应子弹和外星人的碰撞 """
 
     # 删除发生碰撞的子弹和外星人
-    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    collisions = pygame.sprite.groupcollide(groupa=bullets, groupb=aliens, dokilla=True, dokillb=True)
     if collisions:
         for aliens in collisions.values():
             stats.score += ai_settings.alien_point
