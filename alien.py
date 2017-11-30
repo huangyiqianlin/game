@@ -12,8 +12,12 @@ class Alien(Sprite):
         self.ai_settings = ai_settings
 
         # 添加外星人图像，并设置其rect属性
-        image = pygame.image.load('images/alien.pngpng').convert_alpha()
+        image = pygame.image.load('images/alien.png').convert_alpha()
+
+        # 压缩图片大小
         self.image = pygame.transform.scale(image, (64, 64))
+
+        # 获取压缩后图片的外接矩形
         self.rect = self.image.get_rect()
 
         # 每个外星人的最初位置在屏幕左上角附近

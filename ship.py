@@ -10,7 +10,9 @@ class Ship(Sprite):
         self.screen = screen
 
         # 加载飞船图像并获取其外形接矩形
-        image = pygame.image.load('images/ship2.png').convert_alpha()
+        image = pygame.image.load('images/ship.png').convert_alpha()
+
+        # 压缩图片大小
         self.image = pygame.transform.scale(image, (64, 64))
 
         # 获取外接矩形 Rect对象，获取Rect对象之后可以很方便的获取坐标
@@ -38,7 +40,7 @@ class Ship(Sprite):
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.rect.centerx -= self.speed
 
-    def blit_me(self):
+    def blitme(self):
         """ 在指定位置绘制飞船 """
         self.screen.blit(self.image, self.rect)
 

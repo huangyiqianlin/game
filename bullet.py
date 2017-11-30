@@ -13,10 +13,12 @@ class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
         self.alien_image = pygame.image.load('images/bullet.png').convert_alpha()
 
         # 压缩图片至合适的大小
-        self.new_bullet_img = pygame.transform.scale(self.alien_image, (10, 20))
+        self.new_bullet_img = pygame.transform.scale(self.alien_image, (15, 30))
 
-        # 获取图片的surface 对象(也就是矩形形状的对象)
+        # 获取图片的外接矩形对象(Rect对象)
         self.rect = self.new_bullet_img.get_rect()
+
+        # 调整子弹的位置
         self.rect.centerx = ship.rect.centerx
         self.rect.top = ship.rect.top
 

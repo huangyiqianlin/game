@@ -89,7 +89,7 @@ def update_screen(*, ai_settings, screen, ship, bullets, aliens, play_button, st
     screen.fill(ai_settings.bg_color)  # 更新屏幕
     for bullet in bullets.sprites():
         bullet.draw_bullet()
-    ship.blit_me()
+    ship.blitme()
     aliens.draw(screen)
 
     # 显示得分
