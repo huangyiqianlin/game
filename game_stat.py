@@ -4,6 +4,10 @@ class GameStats:
     def __init__(self, ai_settings):
         """ 初始化统计信息 """
         self.ai_settings = ai_settings
+        self.ships_left = None
+        self.score = None
+        self.level = None
+        self.high_score = None
         self.reset_stats()
 
         # 让游戏一开始处于非活动状态

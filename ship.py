@@ -3,17 +3,15 @@ from pygame.sprite import Sprite
 
 
 class Ship(Sprite):
-    def __init__(self, screen, setting):
-        """ 初始化飞船并设定其初始位置 """
+    def __init__(self, screen, setting, assets):
+        """ 初始化飞船并设定其初始位置
+            由于需要碰撞检测，继承Sprite类的类需要一个rect对象来定位
+        """
         super(Ship, self).__init__()
 
         self.screen = screen
 
-        # 加载飞船图像并获取其外形接矩形
-        image = pygame.image.load('images/ship.png').convert_alpha()
-
-        # 压缩图片大小
-        self.image = pygame.transform.scale(image, (64, 64))
+        self.image = assets.ship
 
         # 获取外接矩形 Rect对象，获取Rect对象之后可以很方便的获取坐标
         self.rect = self.image.get_rect()
@@ -32,9 +30,6 @@ class Ship(Sprite):
 
     def update(self):
         """ 根据移动标志来调整飞船位置 """
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        self.rect.centerx = mouse_x
-
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.rect.centerx += self.speed
         if self.moving_left and self.rect.left > self.screen_rect.left:

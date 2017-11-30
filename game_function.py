@@ -5,7 +5,7 @@ from alien import Alien
 from time import sleep
 
 
-def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens, sb):
+def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens, sb, assets):
     """" 响应按键和鼠标事件 """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -13,23 +13,28 @@ def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens
             sys.exit()
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(stats=stats, play_button=play_button, mouse_x=mouse_x, mouse_y=mouse_y,
-                              ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets, sb=sb)
+            if not stats.game_active:
+                check_play_button(stats=stats, play_button=play_button, mouse_x=mouse_x, mouse_y=mouse_y,
+                                  ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets,
+                                  sb=sb, assets=assets)
+            else:
+                ship.rect.centerx = mouse_x
+
         elif event.type == pygame.KEYDOWN:
             check_event_key_down(event=event, ship=ship, ai_setting=ai_setting, screen=screen, bullets=bullets,
-                                 stats=stats, sb=sb, aliens=aliens)
+                                 stats=stats, sb=sb, aliens=aliens, assets=assets)
         elif event.type == pygame.KEYUP:
             check_event_key_up(event=event, ship=ship)
 
 
-def check_play_button(*, stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets, sb):
+def check_play_button(*, stats, play_button, mouse_x, mouse_y, ai_settings, screen, ship, aliens, bullets, sb, assets):
     """ 单击play开始游戏 """
     if play_button.rect.collidepoint(mouse_x, mouse_y) and not stats.game_active:
         game_start(ai_settings=ai_settings, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
-                   ship=ship)
+                   ship=ship, assets=assets)
 
 
-def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, ):
+def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, assets):
     """ 游戏开始 """
 
     # 重置游戏设置
@@ -44,7 +49,7 @@ def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, ):
     sb.prep_score()
     sb.prep_high_score()
     sb.prep_level()
-    sb.prep_ships()
+    sb.prep_ships(assets=assets)
 
     #  清空外星人列表和子弹列表
     aliens.empty()
@@ -54,7 +59,7 @@ def game_start(*, ai_settings, stats, sb, aliens, bullets, screen, ship, ):
     create_fleet(ai_settings=ai_settings, screen=screen, ship=ship, aliens=aliens)
 
 
-def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb, aliens):
+def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb, aliens, assets):
     """ 键盘按下事件 """
     if event.key == pygame.K_RIGHT:  # 键盘 左
         ship.moving_right = True
@@ -66,7 +71,7 @@ def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb,
         ship.moving_left = True
 
     elif event.key == pygame.K_SPACE:  # 键盘 空格
-        fire_bullet(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets)
+        fire_bullet(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets, assets=assets)
 
     elif event.key == pygame.K_s:  # 键盘 S
         if not stats.game_active:
@@ -83,10 +88,11 @@ def check_event_key_up(*, event, ship):
         ship.moving_left = False
 
 
-def update_screen(*, ai_settings, screen, ship, bullets, aliens, play_button, stats, sb):
+def update_screen(*, screen, ship, bullets, aliens, play_button, stats, sb, assets):
     """ 更新屏幕上的图像，并切换到新屏幕 """
 
-    screen.fill(ai_settings.bg_color)  # 更新屏幕
+    # screen.fill(ai_settings.bg_color)  # 更新屏幕
+    screen.blit(assets.bg, assets.bg.get_rect())
     for bullet in bullets.sprites():
         bullet.draw_bullet()
     ship.blitme()
@@ -136,11 +142,11 @@ def check_bullet_alien_collisions(*, ai_settings, screen, ship, aliens, bullets,
         create_fleet(ai_settings=ai_settings, screen=screen, aliens=aliens, ship=ship)
 
 
-def fire_bullet(*, ai_setting, screen, ship, bullets):
+def fire_bullet(*, ai_setting, screen, ship, bullets, assets):
     """ 如果没有达到限制就发射一颗子弹 """
 
     if len(bullets) < ai_setting.bullet_allowed:
-        new_bullet = Bullet(ai_setting, screen, ship)
+        new_bullet = Bullet(ai_setting=ai_setting, screen=screen, ship=ship, assets=assets)
         bullets.add(new_bullet)
 
 

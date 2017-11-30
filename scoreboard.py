@@ -4,7 +4,7 @@ from ship import Ship
 
 
 class Scoreboard:
-    def __init__(self, *, ai_settings, screen, stats):
+    def __init__(self, *, ai_settings, screen, stats, assets):
         """ 初始化显示得分涉及的属性 """
         self.screen = screen
         self.screen_rect = screen.get_rect()
@@ -19,7 +19,7 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
-        self.prep_ships()
+        self.prep_ships(assets=assets)
 
     def prep_score(self):
         """ 将得分转换为渲染的图像 """
@@ -60,11 +60,11 @@ class Scoreboard:
         self.level_rect.right = self.score_rect.right
         self.level_rect.top = self.score_rect.bottom + 10
 
-    def prep_ships(self):
+    def prep_ships(self, *, assets):
         """ 显示还余下多少飞船 """
         self.ships = Group()
         for ship_number in range(self.stats.ships_left):
-            ship = Ship(screen=self.screen, setting=self.ai_settings)
+            ship = Ship(screen=self.screen, setting=self.ai_settings, assets=assets)
             ship.rect.x = 10 + ship_number * ship.rect.width
             ship.rect.y = 10
             self.ships.add(ship)
