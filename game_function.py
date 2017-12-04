@@ -8,16 +8,23 @@ from time import sleep
 def check_event(*, ai_setting, screen, ship, bullets, stats, play_button, aliens, sb, assets):
     """" 响应按键和鼠标事件 """
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT:  # 退出事件
             pygame.quit()
             sys.exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
+        elif event.type == pygame.MOUSEBUTTONDOWN:  # 鼠标按下事件
             if not stats.game_active:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
                 check_play_button(stats=stats, play_button=play_button, mouse_x=mouse_x, mouse_y=mouse_y,
                                   ai_settings=ai_setting, screen=screen, ship=ship, aliens=aliens, bullets=bullets,
                                   sb=sb, assets=assets)
-            else:
+            else:  # 查看是是不是左键
+                mouse_left, mouse_middle, mouse_right = pygame.mouse.get_pressed()
+                if mouse_left:
+                    fire_bullet(ai_setting=ai_setting, screen=screen, ship=ship, bullets=bullets, assets=assets)
+
+        elif event.type == pygame.MOUSEMOTION:  # 鼠标移动事件
+            if stats.game_active:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
                 ship.rect.centerx = mouse_x
 
         elif event.type == pygame.KEYDOWN:
@@ -76,7 +83,7 @@ def check_event_key_down(*, event, ship, ai_setting, screen, bullets, stats, sb,
     elif event.key == pygame.K_s:  # 键盘 S
         if not stats.game_active:
             game_start(ai_settings=ai_setting, stats=stats, sb=sb, aliens=aliens, bullets=bullets, screen=screen,
-                       ship=ship)
+                       ship=ship, assets=assets)
 
 
 def check_event_key_up(*, event, ship):
