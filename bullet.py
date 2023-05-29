@@ -34,3 +34,4 @@ class Bullet(Sprite):  # Bullet 继承了Sprite 类，需要实现rect属性
     def draw_bullet(self):
         """ 在屏幕上绘制子弹 """
         self.screen.blit(self.new_bullet_img, self.rect)
+        """ test """
